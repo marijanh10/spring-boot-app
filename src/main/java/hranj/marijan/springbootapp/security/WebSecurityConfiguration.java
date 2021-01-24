@@ -21,11 +21,8 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/details", "/my-images", "/shared-with-me", "/image-details*")
+                .antMatchers("/details", "/show-my-images", "/shared-with-me", "/image-details/**")
                 .authenticated()
-                .antMatchers("/h2-console/**")
-                .permitAll()
-                .anyRequest().permitAll()
                 .and()
                 .formLogin()
                 .loginPage("/signin")
@@ -37,11 +34,8 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .logoutUrl("/signout")
                 .logoutSuccessUrl("/")
                 .and()
-                .csrf()
-                .disable()
                 .exceptionHandling()
                 .accessDeniedPage("/");
-        http.headers().frameOptions().disable();
     }
 
     @Autowired
