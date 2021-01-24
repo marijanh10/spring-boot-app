@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Verification</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link th:href="@{/css/main.css}" rel="stylesheet" />
+</head>
+
+<body>
+    <div>
+        <form th:action="@{/verify}" th:object="${otpDto}" method="post">
+            <input th:field="*{otp}" type="number" name="otp" required="required"
+                   placeholder="Enter OTP">
+            <input type="hidden" th:field="*{triesCounter}"/>
+            <button>Submit</button>
+            <small class="error-text" th:if="${#fields.hasErrors('otp')}" th:errors="*{otp}"></small>
+            <small class="error-text" th:if="${#fields.hasErrors('triesCounter')}" th:errors="*{triesCounter}"></small>
+            <small class="error-text" th:if="${wrongOtp}">Wrong OTP!</small>
+            <small class="error-text" th:if="${!activeOtp}">OTP is inactive</small>
+            <div th:if="${!activeOtp || #fields.hasErrors('triesCounter')}">
+                <a th:href="@{/signin}">Sign in</a>
+                <a th:href="@{/registration}">Register</a>
+            </div>
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+        </form>
+    </div>
+</body>
+
+</html>

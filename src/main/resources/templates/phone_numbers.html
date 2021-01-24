@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Phone numbers</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link th:href="@{/css/main.css}" rel="stylesheet" />
+</head>
+
+<body>
+    <div>
+        <form th:action="@{/add-phone-number}" th:object="${phoneNumberDto}" method="post">
+            <div>
+                <div>Country code:</div>
+                <select id="country-codes-dropdown" th:field="*{countryCode}" required="required"></select>
+                <small class="error-text" th:if="${#fields.hasErrors('countryCode')}" th:errors="*{countryCode}"></small>
+            </div>
+            <div>
+                <div>Phone number:</div>
+                <input th:field="*{phoneNumber}" type="number" required="required"
+                       placeholder="Phone number">
+                <small class="error-text" th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}"></small>
+
+            </div>
+            <small class="error-text" th:if="${smsError}">Error while sending SMS</small>
+            <button type="submit">Add phone number</button>
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+        </form>
+    </div>
+    <script type="text/javascript" th:src="@{/js/populateCountryCodeSelect.js}"></script>
+</body>
+</html>

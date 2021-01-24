@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Registration</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link th:href="@{/css/main.css}" rel="stylesheet" />
+</head>
+
+<body>
+    <div>
+        <form th:action="@{/registration}" th:object="${userDto}" method="post">
+            <div>
+                <div>Username:</div>
+                <input th:field="*{username}" type="text" required="required"
+                       placeholder="Username">
+                <small class="error-text" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></small>
+            </div>
+            <div>
+                <div>Password:</div>
+                <input th:field="*{password}" type="password" required="required"
+                       placeholder="Password">
+                <small class="error-text" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></small>
+            </div>
+            <div>
+                <div>Repeat password:</div>
+                <input th:field="*{repeatedPassword}" type="password" required="required"
+                       placeholder="Repeated password">
+                <small class="error-text" th:if="${#fields.hasGlobalErrors()}" th:errors="*{global}"></small>
+            </div>
+            <button type="submit">Register</button>
+            <small class="error-text" th:if="${userAlreadyExists}">User already exists</small>
+            <small class="error-text" th:if="${databaseError}">Database error</small>
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+        </form>
+    </div>
+</body>
+</html>

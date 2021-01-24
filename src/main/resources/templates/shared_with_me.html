@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Shared with me</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+
+<body>
+<div>
+    <button type="button" onclick="document.getElementById('logout_form').submit()" value="Sign out">Sign out</button>
+</div>
+
+<div>
+    <a th:href="@{/details}">Details</a>
+    <a th:href="@{/show-my-images}">My images</a>
+</div>
+
+<div>
+    <h1 th:text="'Username:' + ${user.username}"></h1>
+</div>
+
+<div>
+    <h1>Images shared with me</h1>
+</div>
+
+<div>
+    <div th:each="image : ${user.imagesSharedWithMe}">
+        <h3 th:text="${'Shared by: ' + image.user.username}"></h3>
+        <img  th:src="${image.path}" width="200"/>
+    </div>
+</div>
+
+<form id="logout_form" hidden="hidden" method="post" th:action="@{/signout}">
+    <input type="submit">
+    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+</form>
+</body>
+</html>

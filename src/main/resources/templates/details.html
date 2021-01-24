@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>My details</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+
+<body>
+<div>
+    <button type="button" onclick="document.getElementById('logout_form').submit()" value="Sign out">Sign out</button>
+</div>
+
+<div>
+    <a th:href="@{/show-my-images}">My images</a>
+    <a th:href="@{/shared-with-me}">Shared with me</a>
+</div>
+
+<div>
+    <h1 th:text="'Username:' + ${user.username}"></h1>
+</div>
+<div>
+    Phone numbers:
+    <ol>
+        <li th:each="number : ${user.approvedPhoneNumbers}"
+            th:text="${number}"></li>
+    </ol>
+</div>
+
+<form id="logout_form" hidden="hidden" method="post" th:action="@{/signout}">
+    <input type="submit">
+    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+</form>
+</body>
+</html>

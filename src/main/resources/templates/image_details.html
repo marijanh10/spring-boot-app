@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Image details</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+
+<body>
+<div>
+    <button type="button" onclick="document.getElementById('logout_form').submit()" value="Sign out">Sign out</button>
+</div>
+
+<div>
+    <a th:href="@{/details}">Details</a>
+    <a th:href="@{/show-my-images}">My images</a>
+    <a th:href="@{/shared-with-me}">Shared with me</a>
+</div>
+
+<div>
+    <div th:text="'Owner: ' + ${image.user.username}"></div>
+    <br/>
+    <img th:src="${image.path}" width="200"/>
+    <br/>
+    <form th:action="@{/delete-image}" method="post">
+        <div>
+            <input type="hidden" name="imageId" th:attr="value=${image.id}"/>
+        </div>
+        <button type="submit">Delete image</button>
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+    </form>
+    <br/>
+    <span>Shared with:</span>
+    <form th:action="@{/remove-image-permission-from-user}" method="post">
+        <div>
+            <select name="username" required="required">
+                <option th:each="user : ${image.usersWithPermissionToSeeImage}"
+                        th:text="${user.username}" th:attr="value=${user.username}"></option>
+            </select>
+            <input type="hidden" name="imageId" th:attr="value=${image.id}"/>
+        </div>
+        <button type="submit">Remove permissions from user</button>
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+    </form>
+    <br/>
+    <form th:action="@{/share-image-with-user}" method="post">
+        <div>
+            <div>Users who don't own permissions on this image yet:</div>
+            <select name="username" required="required">
+                <option th:each="user : ${usersWhoDontHavePermissionOnImage}"
+                        th:text="${user.username}" th:attr="value=${user.username}"></option>
+            </select>
+            <input type="hidden" name="imageId" th:attr="value=${image.id}"/>
+        </div>
+        <button type="submit">Add permissions to user</button>
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+    </form>
+</div>
+
+
+<form id="logout_form" hidden="hidden" method="post" th:action="@{/signout}">
+    <input type="submit">
+    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+</form>
+</body>
+</html>
